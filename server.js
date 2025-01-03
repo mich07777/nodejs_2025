@@ -15,7 +15,9 @@ app.use(express.json());
 
 //API WRITE CODE HERE:
 
-// API URL -> http:localhost:5000/api/welcome
+// API URL -> http://localhost:5000/api/welcome
+
+// get mthod
 
 app.get("/api/welcome",(request,response) => {
     response.status(200).send("hey your API");
@@ -23,7 +25,13 @@ app.get("/api/welcome",(request,response) => {
 
 
 
+// post method
+// API URL -> http://localhost:5000/api/create/user
 
+app.post("/api/create/user",(request,response) => {
+    console.log(response);
+    response.status(200).send("Suceess");
+})
 
 const portNumber = 5000;
 
