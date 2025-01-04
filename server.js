@@ -104,6 +104,58 @@ app.delete("/api/delete/details/:id",(request,response) => {
     response.status(200).send("Studnets Record Deleted")
 })
 
+//car collection app:
+
+ const carsList = [
+    {
+        name:"Audi",
+        price:26325554,
+        model:"x-3",
+        color:"red",
+        id:1
+    },
+    {
+        name:"Benz",
+        price:757525554,
+        model:"x-3",
+        color:"green",
+        id:2
+    },
+    {
+        name:"Bugtti",
+        price:45525554,
+        model:"x-3",
+        color:"blue",
+        id:3
+    }
+]
+
+// url -http://localhost:5000/api/car/GetDetails(Get)
+app.get("/api/car/GetDetails",(request,response) => {
+
+    response.status(200).send(carsList);
+});
+
+// url -http://localhost:5000/api/car/PostDetails(Post)
+app.post("/api/car/PostDetails",(request,response) => {
+   const StudentsDetails = request.body;
+   StudentsDetails.id = carsList.length + 1;
+   carsList.push(StudentsDetails);
+
+   response.status(200).send("SuccessFully Data Added");
+});
+
+// url -http://localhost:5000/api/car/DeleteDetails/2(Delete)
+app.delete("/api/car/DeleteDetails/:id",(request,response) => {
+   const id = request.params.id;
+   const index = carsList.findIndex((value) => {
+      return value.id == id;
+   })
+   carsList.splice(index,1);
+
+   response.status(200).send("Data Deleted Successfully");
+})
+
 const portNumber = 5000;
 
 server.listen(portNumber,() => {
