@@ -128,6 +128,34 @@ app.delete("/api/delete/details/:id",(request,response) => {
         color:"blue",
         id:3
     }
+];
+
+
+let employeeList = [
+    {
+        "employeeName": "Micahel",
+        "designation":"SoftwaredeDeveloper",
+        "inTime":"10:00 AM",
+        "outTime":"20:00 PM",
+        "Salary":"650000",
+        id:1
+    },
+    {
+        "employeeName": "vivin",
+        "designation":"SoftwaredeDeveloper",
+        "inTime":"10:00 AM",
+        "outTime":"20:00 PM",
+        "Salary":"550000",
+        id:2
+    },
+    {
+        "employeeName": "gijo",
+        "designation":"SoftwaredeDeveloper",
+        "inTime":"10:00 AM",
+        "outTime":"20:00 PM",
+        "Salary":"450000",
+        id:3
+    },
 ]
 
 // url -http://localhost:5000/api/car/GetDetails(Get)
@@ -139,6 +167,7 @@ app.get("/api/car/GetDetails",(request,response) => {
 // url -http://localhost:5000/api/car/PostDetails(Post)
 app.post("/api/car/PostDetails",(request,response) => {
    const StudentsDetails = request.body;
+   //how to add the new value in object:
    StudentsDetails.id = carsList.length + 1;
    carsList.push(StudentsDetails);
 
@@ -154,6 +183,46 @@ app.delete("/api/car/DeleteDetails/:id",(request,response) => {
    carsList.splice(index,1);
 
    response.status(200).send("Data Deleted Successfully");
+});
+
+
+//employeelist
+// Method - Get
+// url - http://localhost:5000/api/get/employeeDetails
+
+app.get("/api/get/employeeDetails",(request,response) => {
+   
+    response.status(200).send(employeeList);
+});
+
+
+// Method -Post
+// url - http://localhost:5000/api/post/employeeDetails
+
+app.post("/api/post/employeeDetails",(request,response) => {
+    const employeeDetails = request.body;
+
+   //how to add the new value in object:
+    employeeDetails.id = employeeList.length + 1;
+    employeeList.push(employeeDetails);
+
+    response.status(200).send("SuccessFully Added the Data");
+})
+
+
+// Method -Delete
+// url - http://localhost:5000/api/delete/employeeDetails/2
+
+
+app.delete("/api/delete/employeeDetails/:id",(request,response) => {
+  const incomingValue = request.params.id;
+  //Normal Array Indexof and object of Array findeIndex
+  const index = employeeList.findIndex((value) => {
+    return value.id == incomingValue;
+  })
+  employeeList.splice(index,1);
+
+  response.status(200).send("Employee Record has been Deleted")
 })
 
 const portNumber = 5000;
