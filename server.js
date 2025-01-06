@@ -1,6 +1,7 @@
 import express, { response } from "express";
 import cors from "cors";
 import http, { request } from "http";
+import mysql from "mysql";
 
 
 const app = express();
@@ -12,6 +13,23 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+const connection = mysql.createConnection({
+    host: "www.db4free.net",
+    user:"vcentry",
+    password:"test@123",
+    database:"travelix",
+    port:3306
+})
+
+connection.connect((error) => {
+    if(error){
+        throw error;
+    }
+    else{
+        console.log("Mysql Server Connected");
+    }
+})
 
 //API WRITE CODE HERE:
 
