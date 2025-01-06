@@ -31,6 +31,28 @@ connection.connect((error) => {
     }
 })
 
+//// SERVER TO NODE JS
+
+// Metod -GET
+// URL - http://localhost:5000/api/list/users
+
+app.get("/api/list/users",(request,response) => {
+    const sql_query = "SELECT * FROM heissenberg";
+
+    connection.query(sql_query,(error,result) => {
+        if(error){
+          response.status(500).send(error);
+        }
+        else{
+          response.status(200).send(result);
+        }
+    })
+})
+
+
+
+//// CLIENT TO NODE API
+
 //API WRITE CODE HERE:
 
 // API URL -> http://localhost:5000/api/welcome
