@@ -225,6 +225,35 @@ app.delete("/api/delete/employeeDetails/:id",(request,response) => {
   response.status(200).send("Employee Record has been Deleted")
 })
 
+
+//Method -Put
+// url - http://localhost:5000/api/updtae/employeeDetails/2
+
+app.put("/api/updtae/employeeDetails/:id",(request,response) => {
+    const id = request.params.id;
+    const incomingValueUpdate = request.body;
+
+    if(incomingValueUpdate.name == "") {
+        response.status(401).send("UserName is Invalid");
+    }
+    if(incomingValueUpdate.age == "") {
+        response.status(401).send("Age is Invalid");
+    }
+    if(incomingValueUpdate.salary == "") {
+        response.status(401).send("location is Invalid");
+    }
+
+
+    const index = employeeList.findIndex((value) => {
+        return value.id == id;
+      });
+
+      employeeList[index] = incomingValueUpdate;
+
+      response.status(200).send("Employee List has been Upadted..!")
+
+})
+
 const portNumber = 5000;
 
 server.listen(portNumber,() => {
