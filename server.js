@@ -2,6 +2,7 @@ import express, { response } from "express";
 import cors from "cors";
 import http, { request } from "http";
 import mysql from "mysql";
+import { error } from "console";
 
 
 const app = express();
@@ -15,10 +16,10 @@ app.use(cors({
 app.use(express.json());
 
 const connection = mysql.createConnection({
-    host: "www.db4free.net",
-    user:"vcentry",
-    password:"test@123",
-    database:"travelix",
+    host: "localhost",
+    user:"root",
+    password:"",
+    database:"fullstack",
     port:3306
 })
 
@@ -32,6 +33,80 @@ connection.connect((error) => {
 })
 
 //// SERVER TO NODE JS
+
+// Metod - GET
+// URL - http://localhost:5000/api/list/Contact
+app.get("/api/list/Contact",(request,response)=> {
+  
+    const sql_query ="SELECT * FROM contactdetails";
+    connection.query(sql_query,(error,result) => {
+        if(error) {
+            response.status(500).send(error);
+        }
+        else{
+            response.status(500).send(result);
+        }
+    })
+})
+
+
+// Metod - POST
+// URL - http://localhost:5000/api/list/Contact/post
+app.post("/api/list/Contact/post",(request,response) => {
+
+    const  incomingValue = request.body;
+    const sql_query = `INSERT INTO contactdetails (name,email,message) values ('${incomingValue.name}','${incomingValue.email}','${incomingValue.message}')`;
+    
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send(result);
+        }
+    })
+
+})
+
+// Metod - POST
+// //payload {
+// name : "",
+// age:""
+// // }
+// URL - http://localhost:5000/api/list/Contact/put
+
+app.put("/api/list/Contact/put/:id",(request,response) => {
+    const id = request.params.id;
+    const incomingValue = request.body;
+
+    const sql_query = `UPDATE contactdetails SET name='${incomingValue.name}', email='${incomingValue.email}',message='${incomingValue.message}' WHERE id=${id}` ;
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send("Contaact details has be Updated");
+        }
+    })
+})
+
+// Method -delete
+//url -http://localhost:5000/api/delete/contact/2
+
+app.delete("/api/delete/contact/:id",(request,response) => {
+    const id = request.params.id;
+    const sql_query =`DELETE FROM contactdetails WHERE id=${id}`;
+
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send("Contact details has be Deleted")
+        }
+    })
+})
+
 
 // Metod -GET
 // URL - http://localhost:5000/api/list/users
