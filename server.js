@@ -2,8 +2,6 @@ import express, { response } from "express";
 import cors from "cors";
 import http, { request } from "http";
 import mysql from "mysql";
-import { error } from "console";
-
 
 const app = express();
 const server = http.createServer(app);
@@ -32,8 +30,103 @@ connection.connect((error) => {
     }
 })
 
-//// SERVER TO NODE JS
+// client and server  using node _api with data
 
+//Method -get
+//url -http://localhost:5000/api/employeedetails/records/usersdetailslist
+
+app.get("/api/employeedetails/records/usersdetailslist",(request,response) => {
+
+    const sql_query = "SELECT * FROM employeedetails";
+
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send(result);
+        }
+    })
+
+});
+
+//Method -post
+//url -http://localhost:5000/api/employeedetails/records/usersdetailslist/SalaryExpectaions
+// payload - {
+//     "name": "Michael",
+//     "age": 25,
+//     "address": "Tharamani",
+//     "employee_id": "000022",
+//     "location": "chennai",
+//     "salary": 65000,
+// } 
+
+app.post("/api/employeedetails/records/usersdetailslist/SalaryExpectaions",(request,response) => {
+
+    const incomingValue = request.body;
+
+    const sql_query = `INSERT INTO employeedetails (name,age,address,employee_id,location,salary) VALUES ('${incomingValue.name}','${incomingValue.age}','${incomingValue.address}','${incomingValue.employee_id}','${incomingValue.location}','${incomingValue.salary}')`;
+
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send("Successfully Submit the Data");
+        }
+    })
+})
+
+//Method -put
+//url -http://localhost:5000/api/employeedetails/records/usersdetailslist/SalaryDetails/Offers/3
+// payload - {
+//     "name": "Michael",
+//     "age": 25,
+//     "address": "Tharamani",
+//     "employee_id": "000022",
+//     "location": "chennai",
+//     "salary": 65000,
+// } 
+
+app.put("/api/employeedetails/records/usersdetailslist/SalaryDetails/Offers/:id",(request,response) => {
+
+    const id = request.params.id;
+    const incomingValue = request.body;
+
+    const sql_query = `UPDATE employeedetails SET name='${incomingValue.name}',age='${incomingValue.age}',address='${incomingValue.address}',employee_id='${incomingValue.employee_id}',location='${incomingValue.location}',salary='${incomingValue.salary}' WHERE id=${id}`
+    
+    connection.query(sql_query,(error,result) => {
+        if(error){
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send("Update Successfully");
+        }
+    })
+})
+
+
+//Method -delete
+//url -http://localhost:5000/api/employeedetails/records/usersdetailslist/SalaryDetails/Offers/sold/3
+
+app.delete("/api/employeedetails/records/usersdetailslist/SalaryDetails/Offers/sold/:id",(request,response) => {
+
+    const id =request.params.id;
+    const sql_query = `DELETE FROM employeedetails WHERE id=${id}`
+
+    connection.query(sql_query,(error,result) =>{
+        if(error) {
+            response.status(500).send(error);
+        }
+        else{
+            response.status(200).send("Deleted Data Sucessfully");
+        }
+    })
+})
+
+
+// client and consloe view using node
+//// SERVER TO NODE JS
 // Metod - GET
 // URL - http://localhost:5000/api/list/Contact
 app.get("/api/list/Contact",(request,response)=> {
@@ -44,13 +137,17 @@ app.get("/api/list/Contact",(request,response)=> {
             response.status(500).send(error);
         }
         else{
-            response.status(500).send(result);
+            response.status(200).send(result);
         }
     })
 })
 
 
 // Metod - POST
+// //payload {
+// name : "",
+// age:""
+// // }
 // URL - http://localhost:5000/api/list/Contact/post
 app.post("/api/list/Contact/post",(request,response) => {
 
@@ -107,6 +204,8 @@ app.delete("/api/delete/contact/:id",(request,response) => {
     })
 })
 
+
+//online dbfree
 
 // Metod -GET
 // URL - http://localhost:5000/api/list/users
